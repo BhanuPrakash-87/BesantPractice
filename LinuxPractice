@@ -1,3 +1,17 @@
+------------------
+Linux Architecture
+------------------
+HARDWARE <- KERNEL <- SHELL <- USER
+kernel is the core of the operating system, acting as the bridge between hardware and software.
+It manages all the essential low-level functions of the computer, like memory management, process scheduling, and device interaction.
+The kernel loads into memory during startup and remains there until the system shuts down.
+
+-----------
+File System
+-----------
+etc -> user configuration, dev -> drivers, bin -> binary scripts, lib -> library files
+
+-------------------------------------------------
 Install Linux environment in windows using Ubuntu
 -------------------------------------------------
 Go to windows search bar and search for “turn windows features on or off” option and select the option.
@@ -12,6 +26,7 @@ Open the installed "Ubuntu",
 If there is an error, update wsl (wsl --update)
 WSL (Windows Subsystem for Linux), is a feature in Windows that allows you to run a Linux environment directly on your Windows machine.
 
-Not it asks for user name and password for the user and it also automatically cretes the root account. 
+Note it asks for user name and password for the user and it also automatically cretes the root account. 
+=============================================================================================================================================
 
 ls /mnt => it shows all the drive folders of the system
