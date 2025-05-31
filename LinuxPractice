@@ -1,0 +1,17 @@
+Install Linux environment in windows using Ubuntu
+-------------------------------------------------
+Go to windows search bar and search for “turn windows features on or off” option and select the option.
+scroll down and select the option “windows Subsystem for Linux” and "Virtual Machine Platform" and click ok.
+Restart system.
+
+once the system is restarted , open cmd prompt and type "bash"
+Bash, short for "Bourne Again SHell", is a powerful command-line interpreter and scripting language.
+Bash provides a command-line interface (CLI), allowing users to interact with the Linux system by typing commands in a terminal.
+
+Open the installed "Ubuntu",
+If there is an error, update wsl (wsl --update)
+WSL (Windows Subsystem for Linux), is a feature in Windows that allows you to run a Linux environment directly on your Windows machine.
+
+Not it asks for user name and password for the user and it also automatically cretes the root account. 
+
+ls /mnt => it shows all the drive folders of the system
