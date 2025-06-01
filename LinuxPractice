@@ -29,4 +29,71 @@ WSL (Windows Subsystem for Linux), is a feature in Windows that allows you to ru
 Note it asks for user name and password for the user and it also automatically cretes the root account. 
 =============================================================================================================================================
 
-ls /mnt => it shows all the drive folders of the system
+ls /mnt  ----==>  it shows all the drive folders of the system
+
+--------------
+Setup Commands
+--------------
+adduser <username>  ----==>  Create user in the Linux OS. User with credentials and other user information stored in /etc/passwd file.
+cat /etc/passwd  ----==>  Shows all the information of the users present in the Linux system.
+login <username>  ----==>   Will directly tried to login gto particular user.
+passwd  ----==>  Change the password of the current logged in user.
+whoami  ----==>  Command will tell who you are or your username.
+users  ----==>  This command tells that  who all users logged in to the computer at the same time.
+whoami  ----==>  Command will tell who you are or your username.
+users  ----==>  This command tells that who all users logged in to the computer at the same time.
+who  ----==>  Same as above with additional information like what date and what time they have logged in.
+w  ----==>  Same as above with additional information along with many more useful info abt the users who logged in.
+
+------------------------
+File Management Commands
+------------------------
+ls  ----==>  lists all the files in the folder.
+ls -l  ----==>  will give more info on the files in the folder
+ls  san*.txt  ----==>  lists all the files starts with san and post that it can contain any other char and ends with txt
+ls -a  ----==>  displays all the files with hidden files information
+  An invisible file is one, the first character of which is the dot or the period character (.).
+  Unix programs (including the shell) use most of these files to store configuration information.
+  files −
+     .profile − The Bourne shell ( sh) initialization script
+     .kshrc − The Korn shell ( ksh) initialization script
+     .cshrc − The C shell ( csh) initialization script
+     .rhosts − The remote shell configuration file
+
+cat > filename.txt  ----==>  ( Asks to input required data and ctrl+c to exit ): will create the file with the data typed.
+cat >> filename.txt  ----==>  Append data.
+cat -b file  ----==>  Displays file data with line number.
+
+touch filename  ----==>  Used to create one or more files at a time (without any data input).
+
+vi filename  ----==>  VI editor to create file
+  i --> enable INSERT more
+  esc:wq --> write and quit
+  esc:q! --> quit without editing
+  esc:set number or set nu --> enable line number  <==----<
+
+wc  filename  ----==>  counts the number of lines , number of words & number of bytes of the file.
+wc filename1 filename2 filename3  ----==>  word count for multiple files.
+cp sourcefile destinationfile  ----==>  copies the file from source to destination.
+mv oldfile newfile  ----==>  rename the file.
+rm  filename  ----==>  delete the file.
+rm file1 file2 file3  ----==>  delete multiple files.
+
+-------------------------------------
+Folder/Directory  Management Commands
+-------------------------------------
+cd ~  ----==>  will route to the home directory, here ~ indicates the home directory.
+cd ~username  ----==>  will route to the homr directory of the user mentioned.
+cd -  ----==>  route to previous directory.
+cd ..  ----==>  go one folder back.
+pwd  ----==>  prints the present working directory.
+mkdir foldername  ----==>  creates single folder.
+mkdir folder1 folder2 folder3  ----==>  creates multiple folders.
+mkdir -p folder1/folder2/folder3  ----==>  creates the folder recurcievely one inside another  <==----<
+rmdir foldername  ----==>  deletes single folder.
+rm -rf  ----==>  deteles the folder recuercievely even tough it contains the sub folders or files
+mv oldfolder newfolder  ----==>  renames the old folder to new folder name
+
+----------------------
+Permissions and Access
+----------------------
