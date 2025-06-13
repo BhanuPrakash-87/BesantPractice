@@ -97,3 +97,12 @@ mv oldfolder newfolder  ----==>  renames the old folder to new folder name
 ----------------------
 Permissions and Access
 ----------------------
+-rw-r--r-- 1 bhanu bhanu     0 Jun  1 16:50 01Jun2025_3.txt
+drwxrwxr-x 4 bhanu bhanu  4096 Sep 28  2024 bhanu/
+
+drwxr-x---  ----==>  Directory (first character 'd')
+-rw-r--r--  ----==>  File (first character '-')
+
+(2,3,4) Owner
+(5,6,7) Group
+(8,9,10) Others/Everyone
