@@ -103,6 +103,20 @@ drwxrwxr-x 4 bhanu bhanu  4096 Sep 28  2024 bhanu/
 drwxr-x---  ----==>  Directory (first character 'd')
 -rw-r--r--  ----==>  File (first character '-')
 
-(2,3,4) Owner
+(2,3,4) User/Owner
 (5,6,7) Group
 (8,9,10) Others/Everyone
+
+Symbolic way (+(add), -(revoke), =(set/copy))
+chmod u+x,g-w a.txt  ----==>  add user execute access, remove group write access
+chmod u=rwx,g=rwx,0=rwx a.txt  ----==>  full permission for user, group, others
+
+Absolute way (1(execute), 2(write), 4(read))
+chmod 753 a.txt  ----==>  User - full access, Group - Read & Ececute, Others - Write & Execute
+
+chown bhanu a.txt  ----==>  Change Owner
+chgrp bhavish a.txt  ----==>  Change Group
+
+----
+Find
+----
