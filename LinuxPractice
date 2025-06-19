@@ -72,11 +72,11 @@ vi filename  ----==>  VI editor to create file
   esc:q! --> quit without editing
   esc:set number or set nu --> enable line number  <==----<
 
-wc  filename  ----==>  counts the number of lines , number of words & number of bytes of the file.
+wc filename  ----==>  counts the number of lines , number of words & number of bytes of the file.
 wc filename1 filename2 filename3  ----==>  word count for multiple files.
 cp sourcefile destinationfile  ----==>  copies the file from source to destination.
 mv oldfile newfile  ----==>  rename the file.
-rm  filename  ----==>  delete the file.
+rm filename  ----==>  delete the file.
 rm file1 file2 file3  ----==>  delete multiple files.
 
 --------------------------------------
@@ -121,6 +121,7 @@ chgrp bhavish a.txt  ----==>  Change Group
 -----
 Find
 -----
+(. -> current directory, / -> root directory)
 find . -name '*.txt'  ----==>  Find all the files under the current directory with .txt extension and print the relative path of each file matching.
                                It finds recurcievely one inside another folder.
 find / -name '*.txt'  ----==>  Find all the files based on root directory.
@@ -162,3 +163,30 @@ gzip -d temp.tar.gz  ----==>  Extract the above zip file
 ------
 Alias
 ------
+alias home='cd /home/bhanu'  ----==>  The alias will work until the terminal session is closed.
+                                      To make it permanent, you need to add it to the shell configuration,
+                                      which could be ~/.bashrc or ~/.profile or ~/.bash_profile if you use the Bash shell
+
+=============================================================================================================================================
+------------------------------------- few useful commands -------------------------------------
+
+less <file name>   ----==>  It shows you the content stored inside a file, in a nice and interactive UI
+more <file name>
+tail -f <file name>  ----==>  It opens the file at the end, and watches for file changes
+tail -n 10 <filename>  ----==>  You can print the last 10 lines in a file
+wc test.txt  ----==>  Gives us useful information about a file or input it receives via pipes
+                      The first column returned is the number of lines. The second is the number of words. The third is the number of bytes.
+wc -l test.txt  ----==>  just count the lines
+wc -w test.txt  ----==>  just the words
+wc -c test.txt  ----==>  just the bytes
+
+echo "hello"  ----==>  will print hello to the terminal
+
+du  ----==>  disk utilization
+df  ----==>  disk fragmentation
+
+file <file name>  ----==>  used to determine the file type
+rename 's/\.txt$/\.pdf/'  ----==>  ('s/old/new/') used to replace the names in bulk like change the extention of file from .txt to .pdf etc. 
+                                   Note this command may not be present in ubuntu, we need to install using apt install rename
+apt install rename  ----==>  (Advanced Package Tool) Install rename tool
+cut 
