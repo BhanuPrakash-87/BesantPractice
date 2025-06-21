@@ -1,7 +1,7 @@
 =============================================================================================================================================
 ------------------------------------------------------------ few useful commands ------------------------------------------------------------
 
-less <file name>   ----==>  It shows you the content stored inside a file, in a nice and interactive UI
+less <file name>  ----==>  It shows you the content stored inside a file, in a nice and interactive UI
 more <file name>
 tail -f <file name>  ----==>  It opens the file at the end, and watches for file changes
 tail -n 10 <filename>  ----==>  You can print the last 10 lines in a file

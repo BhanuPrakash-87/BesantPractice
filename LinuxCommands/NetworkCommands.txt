@@ -1,0 +1,57 @@
+ifconfig  ----==>  interface configurator, You can view IP address, MAC address and MTU (Maximum Transmission Unit) with ifconfig command
+ip addr  ----==>  gives both public and private ips
+ip -4 addr  ----==>  private ip, used for internal connections
+ip -6 addr  ----==>  public ip, exposed to internet
+
+traceout facebook.com  ----==>  network troubleshooting utility that helps us determine the number of hops and packets traveling path required to reach a destination.
+ping google.com  ----==>  (Packet Internet Groper), It checks connectivity between two nodes to see if a server is available
+netstat -a  ----==>  Represents every socket, both non-listening and listening, and every protocol, like UDP, TCP, etc.
+netstat -at  ----==>  Represents TCP connections only (-au represents UDP connections only).
+netstat -ant  ----==>  Represents every TCP connection without DNS resolution (rather than displays IP addresses).
+netstat -al  ----==>  Displays listening sockets only.
+netstat -aep  ----==>  Displays PID and to which function all sockets belong; e includes extra information like the user. Execute as root to check every PID.
+netstat -s  ----==>  Displays network statistics.
+netstat -i  ----==>  Shows a table of every network interface. Include -e to receive the result, which is the same as ifconfig.
+netstat -r  ----==>  Displays the information on kernel routing. It is a similar result as route -e.
+netstat -ct  ----==>  Shows TCP connections regularly.
+netstat -g  ----==>  Shows the information of multicast group membership for IPv6 and IPv4.
+netstat -atnp | grep ESTA  ----==>  Shows every "established" connection of TCP currently.
+netstat -lntu  ----==>  Shows every service listening UDP and TCP, every free open port over the local device.
+
+nslookup facebook.com  ----==>  discover the IP address or DNS record of a specific domain name
+host facebook.com  ----==>  discover the IP address of the given domain name
+
+curl -O https://github.com/git-for-windows/git/releases/download/v2.50.0.windows.1/Git-2.50.0-64-bit.exe  ----==>  download a file from the internet
+wget https://github.com/git-for-windows/git/releases/download/v2.50.0.windows.1/Git-2.50.0-64-bit.exe  ----==>  download a file from the internet
+
+uptime  ----==>  tells us how long a system has been running
+service <script name> start  ----==>  Usually all scripts which automatically gets executed when OS loads are stored in /etc/init.d directory.
+service <script name> stop
+service <script name> restart
+
+ps -ef  ----==>  List currently running process in full format (same as ps -aux)
+ps -ax  ----==>  List currently running process
+ps -u <username> ----==>  List process for specific user
+ps -C <command>  ----==>  List process for given command
+ps -p <PID>  ----==>  List process with given PID
+ps -ppid <PID>  ----==>  List process with given ppid
+pstree  ----==>  Show process in hierarchy
+ps -L  ----==>  List all threads for a particular process
+ps --sort pmem  ----==>  Find memory leak
+ps -ef  ----==>  Show security information
+ps -ef  ----==>  Show process running by root
+
+kill -9 <PID>  ----==>  kill all child process
+
+free -b  ----==>  display information in Bytes
+free -m  ----==>  display information in Megabytes
+free -g  ----==>  display information in Gigabytes
+
+top  ----==>  (table of processes) displays all the running process within the environment of your system
+
+last -n <number>  ----==>  Display specified number of lines
+last -R  ----==>  Disable displaying hostname
+last -a  ----==>  Display hostname in last column
+last -F  ----==>  Display full login and logout time
+last <username>  ----==>  Display specific username
+last -x  ----==>  Display last shutdown time
