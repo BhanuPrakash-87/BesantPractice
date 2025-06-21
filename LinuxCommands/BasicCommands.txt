@@ -1,0 +1,168 @@
+-------------------
+Linux Architecture
+-------------------
+HARDWARE <- KERNEL <- SHELL <- USER
+kernel is the core of the operating system, acting as the bridge between hardware and software.
+It manages all the essential low-level functions of the computer, like memory management, process scheduling, and device interaction.
+The kernel loads into memory during startup and remains there until the system shuts down.
+
+------------
+File System
+------------
+etc -> user configuration, dev -> drivers, bin -> binary scripts, lib -> library files
+
+--------------------------------------------------
+Install Linux environment in windows using Ubuntu
+--------------------------------------------------
+Go to windows search bar and search for “turn windows features on or off” option and select the option.
+scroll down and select the option “windows Subsystem for Linux” and "Virtual Machine Platform" and click ok.
+Restart system.
+
+once the system is restarted , open cmd prompt and type "bash"
+Bash, short for "Bourne Again SHell", is a powerful command-line interpreter and scripting language.
+Bash provides a command-line interface (CLI), allowing users to interact with the Linux system by typing commands in a terminal.
+
+Open the installed "Ubuntu",
+If there is an error, update wsl (wsl --update)
+WSL (Windows Subsystem for Linux), is a feature in Windows that allows you to run a Linux environment directly on your Windows machine.
+
+Note it asks for user name and password for the user and it also automatically cretes the root account. 
+=============================================================================================================================================
+
+ls /mnt  ----==>  it shows all the drive folders of the system
+
+---------------
+Setup Commands
+---------------
+adduser <username>  ----==>  Create user in the Linux OS. User with credentials and other user information stored in /etc/passwd file.
+cat /etc/passwd  ----==>  Shows all the information of the users present in the Linux system.
+login <username>  ----==>   Will directly tried to login gto particular user.
+passwd  ----==>  Change the password of the current logged in user.
+whoami  ----==>  Command will tell who you are or your username.
+users  ----==>  This command tells that  who all users logged in to the computer at the same time.
+whoami  ----==>  Command will tell who you are or your username.
+users  ----==>  This command tells that who all users logged in to the computer at the same time.
+who  ----==>  Same as above with additional information like what date and what time they have logged in.
+w  ----==>  Same as above with additional information along with many more useful info abt the users who logged in.
+
+------------------------
+File Management Commands
+------------------------
+ls  ----==>  lists all the files in the folder.
+ls -l  ----==>  will give more info on the files in the folder
+ls  san*.txt  ----==>  lists all the files starts with san and post that it can contain any other char and ends with txt
+ls -a  ----==>  displays all the files with hidden files information
+  An invisible file is one, the first character of which is the dot or the period character (.).
+  Unix programs (including the shell) use most of these files to store configuration information.
+  files −
+     .profile − The Bourne shell ( sh) initialization script
+     .kshrc − The Korn shell ( ksh) initialization script
+     .cshrc − The C shell ( csh) initialization script
+     .rhosts − The remote shell configuration file
+
+cat > filename.txt  ----==>  ( Asks to input required data and ctrl+c to exit ): will create the file with the data typed.
+cat >> filename.txt  ----==>  Append data.
+cat -b file  ----==>  Displays file data with line number.
+
+touch filename  ----==>  Used to create one or more files at a time (without any data input).
+
+vi filename  ----==>  VI editor to create file
+  i --> enable INSERT more
+  esc:wq --> write and quit
+  esc:q! --> quit without editing
+  esc:set number or set nu --> enable line number  <==----<
+
+wc filename  ----==>  counts the number of lines , number of words & number of bytes of the file.
+wc filename1 filename2 filename3  ----==>  word count for multiple files.
+cp sourcefile destinationfile  ----==>  copies the file from source to destination.
+mv oldfile newfile  ----==>  rename the file.
+rm filename  ----==>  delete the file.
+rm file1 file2 file3  ----==>  delete multiple files.
+
+--------------------------------------
+Folder/Directory  Management Commands
+--------------------------------------
+cd ~  ----==>  will route to the home directory, here ~ indicates the home directory.
+cd ~username  ----==>  will route to the homr directory of the user mentioned.
+cd -  ----==>  route to previous directory.
+cd ..  ----==>  go one folder back.
+pwd  ----==>  prints the present working directory.
+mkdir foldername  ----==>  creates single folder.
+mkdir folder1 folder2 folder3  ----==>  creates multiple folders.
+mkdir -p folder1/folder2/folder3  ----==>  creates the folder recurcievely one inside another  <==----<
+rmdir foldername  ----==>  deletes single folder.
+rm -rf  ----==>  deteles the folder recuercievely even tough it contains the sub folders or files
+mv oldfolder newfolder  ----==>  renames the old folder to new folder name
+
+-----------------------
+Permissions and Access
+-----------------------
+-rw-r--r-- 1 bhanu bhanu     0 Jun  1 16:50 01Jun2025_3.txt
+drwxrwxr-x 4 bhanu bhanu  4096 Sep 28  2024 bhanu/
+
+drwxr-x---  ----==>  Directory (first character 'd')
+-rw-r--r--  ----==>  File (first character '-')
+lrw-r--r--  ----==>  Soft linked file (first character 'l')
+
+(2,3,4) User/Owner
+(5,6,7) Group
+(8,9,10) Others/Everyone
+
+Symbolic way (+(add), -(revoke), =(set/copy))
+chmod u+x,g-w a.txt  ----==>  add user execute access, remove group write access
+chmod u=rwx,g=rwx,0=rwx a.txt  ----==>  full permission for user, group, others
+
+Absolute way (1(execute), 2(write), 4(read))
+chmod 753 a.txt  ----==>  User - full access, Group - Read & Ececute, Others - Write & Execute
+
+chown bhanu a.txt  ----==>  Change Owner
+chgrp bhavish a.txt  ----==>  Change Group
+
+-----
+Find
+-----
+(. -> current directory, / -> root directory)
+find . -name '*.txt'  ----==>  Find all the files under the current directory with .txt extension and print the relative path of each file matching.
+                               It finds recurcievely one inside another folder.
+find / -name '*.txt'  ----==>  Find all the files based on root directory.
+find / -type d -name te*   ----==>  Find all the folders recuercievely which starts with te* (d indicates directory)
+find / -type d -name temp or -name test 2>/dev/null  ----==>  Finds all the folders which is either temp or test using or operator
+                                                              2> to supress all warning messages
+find . -type f -size +100c  ----==>  search files that have more than 100 characters (bytes) in them (f indicates file)
+find . -type f -size +100k -size -1M  ----==>  Search files bigger than 100KB but smaller than 1MB
+find . -type f -mtime +3  ----==>  Search files edited more than 3 days ago
+find . -type f -mtime -1  ----==>  Search files edited in the last 24 hours
+find . -type f -mtime -1 -delete  ----==>  deletes all the files edited in the last 24 hours.
+
+--------
+Linking
+--------
+ln 1.txt ln1.txt  ----==>  Hard link, new file will be created and we cannot distinguish from a regular file
+ln -s 1.txt ln1.txt  ----==>  Soft link, if you delete the original file, the links will be broken, and the shell will tell you "No such file or
+                              directory" if you try to access it
+
+-----
+gzip
+-----
+gzip -cv *.txt > myfiles.gz  ----==>  (-c create new file leaving the original file intact, -v view progress)
+gzip -d myfiles.gz  ----==>  decompress the file
+
+-------
+gunzip
+-------
+gunzip myfiles.gz  ----==>  unzip the compressed file
+
+----------------
+Create tar file
+----------------
+tar -cvf myfiles.tar *.txt  ----==>  create tar file
+tar -xvf myfiles.tar  ----==>  extract tar file
+tar -czf temp.tar.gz *.tar  ----==>  We an creted a compressed gzip file for the tar file using -z option
+gzip -d temp.tar.gz  ----==>  Extract the above zip file
+
+------
+Alias
+------
+alias home='cd /home/bhanu'  ----==>  The alias will work until the terminal session is closed.
+                                      To make it permanent, you need to add it to the shell configuration,
+                                      which could be ~/.bashrc or ~/.profile or ~/.bash_profile if you use the Bash shell
