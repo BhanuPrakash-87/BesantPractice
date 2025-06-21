@@ -168,7 +168,7 @@ alias home='cd /home/bhanu'  ----==>  The alias will work until the terminal ses
                                       which could be ~/.bashrc or ~/.profile or ~/.bash_profile if you use the Bash shell
 
 =============================================================================================================================================
-------------------------------------- few useful commands -------------------------------------
+------------------------------------------------------------ few useful commands ------------------------------------------------------------
 
 less <file name>   ----==>  It shows you the content stored inside a file, in a nice and interactive UI
 more <file name>
@@ -189,4 +189,36 @@ file <file name>  ----==>  used to determine the file type
 rename 's/\.txt$/\.pdf/'  ----==>  ('s/old/new/') used to replace the names in bulk like change the extention of file from .txt to .pdf etc. 
                                    Note this command may not be present in ubuntu, we need to install using apt install rename
 apt install rename  ----==>  (Advanced Package Tool) Install rename tool
-cut 
+
+cut -d- -f1 opr.txt  ----==>  -d or –delimiter, -f or –fields=LIST: Selects specific fields (f1,f2,f3) based on a chosen delimiter
+cut -c 1,3 opr.txt  ----==>  -c or –characters=LIST: Pulls out specific characters from each line
+cut -d- -f3 opr.txt | cut -d@ -f2  ----==>  output of first command will be input for next command
+
+grep @gmail.com opr.txt  ----==>  "global regular expression print". grep command filters the content of a file
+grep -v @gmail.com opr.txt  ----==>  lines not matching to the specified word
+grep -i error app.log  ----==>  filters output in a case-insensitive way
+
+comm opr1.txt opr2.txt  ----==>  common thing in files
+comm -1 opr1.txt opr2.txt  ----==>  first column -> non-matching items of first file
+comm -2 opr1.txt opr2.txt  ----==>  second column -> non-matching items of second file
+comm -3 opr1.txt opr2.txt  ----==>  third column -> matching items of both file
+
+cat opr2.txt | tr 'BHAN' 'bhav'  ----==>  'tr' stands for 'translate'. It is used to translate, like from lowercase to uppercase and vice versa
+
+sort opr2.txt | uniq -c  ----==>  when there is single column, sort and gives unique values along with their count
+sort -k1 opr2.txt  ----==>  when there are multiple columns, sort by first column
+
+locate <file name>  ----==>  Searches files in per-built database of file system, So it is faster than find command
+
+date +'%d-%m-%y'+  ----==>  21-06-25
+date -d tomorrow
+
+cal  ----==>  displays current month's calender with current day highlighted
+cal 10 1987  ----==>  displays calender accordingly
+
+sleep 20  ----==>  By default seconds, sleep for 20 seconds
+
+=============================================================================================================================================
+-----------------
+Network commands
+-----------------
