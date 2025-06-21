@@ -1,0 +1,21 @@
+--------------------------
+External related Commands
+--------------------------
+
+ftp  ----==>  File Transfer Protocol, It connect to the remote host to exchange files and directories
+sftp  ----==>  secure ftp
+
+To enter the ftp prompt type ftp and you are in ftp prompt
+To exit from ftp prompt type ! and press enter, It will take you to the shell prompt.
+
+
+get <filename> <newname>  ----==>  downloads or gets the file from other system to our system 
+put <filename>  ----==>  upload the file name to other servers
+mget <multiplefiles>  ----==>  download multiple files
+mput <multiplefiles>  ----==>  upload multiple files
+
+scp test.txt abc@192.187.18.194:/home/amazon/data  ----==>  copy a file name “test.txt” from local system to remote system
+scp -r info abc@192.187.18.194:/home/amazon/data  ----==>  copy a folder name “info ” from local system to remote system
+scp abc@192.187.18.194:/home/amazon/cred.txt /home/daksh/santhosh  ----==>  copy a file  name “creds.txt” from target system to local
+
+ssh abc@195.165.78.34  ----==>  (secure shell) connect to remote server from local server

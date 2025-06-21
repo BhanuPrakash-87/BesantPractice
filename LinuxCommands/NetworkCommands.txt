@@ -1,3 +1,7 @@
+-----------------
+Network Commands
+-----------------
+
 ifconfig  ----==>  interface configurator, You can view IP address, MAC address and MTU (Maximum Transmission Unit) with ifconfig command
 ip addr  ----==>  gives both public and private ips
 ip -4 addr  ----==>  private ip, used for internal connections
