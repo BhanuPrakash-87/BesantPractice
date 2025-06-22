@@ -1,0 +1,66 @@
+
+
+---------------------------------
+Githud Repository already exists
+---------------------------------
+
+Download and install git for windows latest version
+
+git clone https://github.com/BhanuPrakash-87/BesantPractice.git
+cd BesantPractice/
+git config --global user.email "bhanuprakashd87@gmail.com"
+git config --global user.name "BhanuPrakash-87"
+Omit --global
+
+git status
+git add *
+git commit -m "message"
+git push
+
+-------------------------------------
+Install in AWS Linux server - Ubuntu
+-------------------------------------
+sudo apt-get update
+sudo apt-get install -y git
+
+git --version  ----==>  Show's the current git version
+
+git config --global user.email "you@example.com"  ----==>  Set the email to the git global configuration
+git config --global user.name "Your Name"  ----==>  Set the name to the git global configuration
+
+git config --global --list  ----==>  List global configuration for the current user
+
+mkdir myfirstrepo  ----==>  Create a directory
+cd myfirstrepo  ----==>  Change the working directory to above
+echo "Hello World" > index.html  ----==>  Create the index.html file and insert the Hello World text to the html file
+
+git init  ----==>  Create an empty Git repository
+git add index.html  ----==>  Add the file to the staging area
+
+git rm --cached index.html  ----==>  Remove the file from the staging area to the working directory
+
+git add .  ----==>  Adds all the files in working directory to the staging area
+git commit -m "Initial Commit"  ----==>  Moves all your changes in staging area to the local repository
+
+git log  ----==>  Your last commit should be listed here
+
+
+-------------------------------------
+Working with Remote repository
+-------------------------------------
+git remote add origin https://github.com/kloudvsol/dec-dev
+
+git remote -v
+origin  https://github.com/kloudvsol/dec-dev (fetch)
+origin  https://github.com/kloudvsol/dec-dev (push)
+
+git pull  ----==>  pull datat from remote repo
+git push -u origin master  ----==>  Git push to sync data from local to remote repo
+
+
+git branch newbranch  ----==>  Create branch
+[root@server dev-git]# git branch
+* master
+  newbranch
+
+git branch -D newbranch  ----==>  Delete branch
