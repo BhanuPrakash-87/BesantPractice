@@ -21,4 +21,32 @@ docker run -it --name c1 ubuntu  ----==>  Create a container by name "c1" using 
 												-i container by default have a stdout stream, -i get stdin stream added
 
 --Now we are inside "c1" container
+ctrl + c  ----==>  To exit from container, This eventually stops the container
 
+
+docker start c1  ----==>  Start the container if stopped
+docker attach c1   ----==>  Enter inside container, This is possible only if container status is Up
+
+
+--Now we are inside "c1" container and perform below steps
+apt-get update  ----==>  Update ubuntu package list currently installed on system
+apt-get install -y apache2 curl net-tools  ----==>  Install required tools with 'yes' for all questions
+service apache2 status  ----==>  Check apache status
+echo 'Hello World' > /var/www/html/index.html  ----==>  Default html path on apache
+service apache2 start  ----==>  Start apache services
+netstat -plnt  ----==>  -p Process ID,
+						-l Listening sockets,
+						-n Display port numbers and addresses in numeric format,
+						-t Display only tcp connection
+curl 0.0.0.0  ----==>  Connect to web server
+curl localhost  ----==>  Same as above
+ctrl + p + q  ----==>  exit will stop container, so use this
+
+
+docker inspect c1  ----==>  Get complete container information
+docker inspect c1 -f '{{.NetworkSettings.IPAddress}}'  ----==>  Get only required container information
+
+=================================================================================================================
+-------------
+Port Binding
+-------------
