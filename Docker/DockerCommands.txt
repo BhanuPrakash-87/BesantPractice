@@ -78,3 +78,24 @@ docker push bhanuprakash27/homepractice:ubuntuapacheimage
 ----------------------------
 Pull images from Docker hub
 ----------------------------
+docker system prune -af  ----==>  Delete all images and inactive containers, this will not delete active containers
+								  -a Include all unused imageg
+								  -f Delete forcefully without prompting for confirmation,
+
+docker pull bhanuprakash27/homepractice:ubuntuapacheimage  ----==>  Pull image from Docker hub
+docker run -itd --name c1 bhanuprakash27/homepractice:ubuntuapacheimage  ----==>  Create a container by name "c1" using downloaded image from Docker hub
+docker exec -it c1 bash  ----==>  Enter into container without "attach" command
+
+=================================================================================================================
+------------
+Docker file
+------------
+FROM  ----==>  Base image, It is usually the first instruction in a Dockerfile
+LABEL  ----==>  Label your image (Key value pair)
+WORKDIR  ----==>  Define your work directory path
+ENV  ----==>  Environment variables
+RUN  ----==>  Run shell commands, can be utilized to install an application, update libraries, or do general setup
+COPY  ----==>  Allows to copy file from host to image
+CMD  ----==>  There can only be one CMD instruction in a Dockerfile
+ENTRYPOINT  ----==>  
+EXPOSE  ----==>  
