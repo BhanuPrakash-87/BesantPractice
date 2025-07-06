@@ -50,3 +50,31 @@ docker inspect c1 -f '{{.NetworkSettings.IPAddress}}'  ----==>  Get only require
 -------------
 Port Binding
 -------------
+docker run -itd --name c2 -p 8080:81 ubuntu  ----==>  Create a container by name "c2" using downloaded "ubuntu" image
+													  -d Detached mode, Docker can run your container in detached mode in the background
+													  8080 Host port, 80 Container port
+
+netstat -plnt  ----==>  Check the listening ports of Docker host
+
+=================================================================================================================
+--------------------------------
+Move local images to Docker hub
+--------------------------------
+Create a repository "homepractice" in docker hub (hub.docker.com)
+
+docker tag ubuntu:latest bhanuprakash27/homepractice:ubuntuapacheimage
+docker push bhanuprakash27/homepractice:ubuntuapacheimage
+		The push refers to repository [docker.io/bhanuprakash27/homepractice]
+		a8346d259389: Preparing
+		denied: requested access to the resource is denied
+
+docker login -u bhanuprakash27 -p <token here>  ----==>  Generate a tocken in "Account Settings -> Personal access tokens"
+
+docker push bhanuprakash27/homepractice:ubuntuapacheimage
+		The push refers to repository [docker.io/bhanuprakash27/homepractice]
+		a8346d259389: Mounted from library/ubuntu
+		ubuntuapacheimage: digest: sha256:eac4bf26432e20229396bc04275a777ef373a565ba53853bde69f1c5a591a94b size: 529
+
+----------------------------
+Pull images from Docker hub
+----------------------------
