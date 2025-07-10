@@ -96,6 +96,21 @@ WORKDIR  ----==>  Define your work directory path
 ENV  ----==>  Environment variables
 RUN  ----==>  Run shell commands, can be utilized to install an application, update libraries, or do general setup
 COPY  ----==>  Allows to copy file from host to image
-CMD  ----==>  There can only be one CMD instruction in a Dockerfile
-ENTRYPOINT  ----==>  
-EXPOSE  ----==>  
+ENTRYPOINT  ----==>  sets the main command, generally not easily overridden from the command line
+CMD  ----==>  Similar to ENTRYPOINT, Arguments can be overridden
+EXPOSE  ----==>  Container port
+
+Example:
+FROM ubuntu:18.04
+LABEL name=apache maintainer=BhanuPrakash
+ENV HELLO="WORLD"
+RUN  apt-get update && apt-get install -y apache2 curl net-tools
+COPY ./index.html /var/www/html/index.html
+ENTRYPOINT apachectl -D FOREGROUND
+EXPOSE 80
+
+vi dockerfile  ----==>  Paste above example content in file and create index.html at required path
+docker build -t ubuntuimage .  ----==>  used to construct Docker images from a Dockerfile.
+										It reads the instructions within the Dockerfile and executes them to create a new image.
+										This process automates the creation of container images, ensuring consistency and repeatability.
+										Image name must be lowercase (ERROR: invalid tag "ubuntuImage": repository name must be lowercase)
