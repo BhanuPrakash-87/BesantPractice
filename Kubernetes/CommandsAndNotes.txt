@@ -1,0 +1,186 @@
+Kubernetes is an open-source container orchestration platform,
+It automates the deployment, scaling and management of containerized applications.
+
+
+Master Node / Control Plane --> Applications generally do not run here
+api server --> Exposes K8s APIs to us
+etcd --> Key Value store for our cluster data
+scheduler --> Watches for newly created Pods with no assigned node, and selects a node for them to run on
+controller --> Component that runs controller processes (Node controller, Route controller, Service controller)
+Kubelet --> An agent that runs on each node in the cluster. It makes sure that containers are running in a Pod.
+Kube proxy --> Local proxy, Holds IP tables, maintains network rules on nodes
+
+
+Worker Node / Data Plane --> Applications run here, Create another node once this reaches its capacity
+Kubelet --> Listens for instructions from scheduler, Serves to deploy and destroy containers
+Kube proxy --> Local proxy, Holds IP tables (Services to talk to other containers on other nodes)
+
+Pod --> Smallest object of K8s, can have more than 1 container
+
+========================================================================================================================
+
+create 2 Ec2 instance with 2 cpu's (t3.small or t2.medium)
+master 172.31.90.31 -> Private IP
+worker 172.31.85.10 -> Private IP
+
+----------------------------------------
+Login to master and perform below steps
+----------------------------------------
+vi /etc/hosts  ----==>  Append master and worker private IPs in hosts file 
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost6 localhost6.localdomain6
+master 172.31.90.31
+worker 172.31.85.10
+
+----------------------------------------------
+Perform below steps in - master and worker
+----------------------------------------------
+sudo yum update -y (for Amazon linux)  ----==>  install all available updates, apt-get update (for Ubuntu)
+sudo yum install -y docker  ----==>  Install docker in both master and worker
+sudo systemctl start docker
+sudo systemctl enable docker
+
+---------------------
+K8s steps starts now
+---------------------
+-----------------------------------------------------------------------
+- master & worker (Install K8s in both master and worker)
+-----------------------------------------------------------------------
+Below step overwrites any existing configuration in /etc/yum.repos.d/kubernetes.repo
+
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.33/rpm/
+enabled=1
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.33/rpm/repodata/repomd.xml.key
+exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
+EOF
+
+[root@ip-172-31-90-31 ~]# yum repolist
+repo id                                                                         repo name
+amazonlinux                                                                     Amazon Linux 2023 repository
+kernel-livepatch                                                                Amazon Linux 2023 Kernel Livepatch repository
+kubernetes                                                                      Kubernetes
+
+# Install kubelet, kubeadm and kubectl
+sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+
+#(Optional) Enable the kubelet service before running kubeadm
+sudo systemctl enable --now kubelet
+
+
+
+---------
+- master
+---------
+kubeadm init --control-plane-endpoint "172.31.90.31:6443" --upload-certs --pod-network-cidr=10.244.0.0/16  ----==>  To create cluster - master
+# 172.31.90.31 is the IP address of this node,
+# cluster-endpoint is a custom DNS name that maps to this IP.
+# This will allow you to pass --control-plane-endpoint=cluster-endpoint to kubeadm init and pass the same DNS name to kubeadm join
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+# In the end of above command output we have this
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now join any number of control-plane nodes running the following command on each as root:
+
+  kubeadm join 172.31.90.31:6443 --token vg9otx.fe6jzahg7zlftln7 \
+        --discovery-token-ca-cert-hash sha256:5e3bc27425a741813f4de351b801bc68682c4ec2d6535ebf208863de5e385f8d \
+        --control-plane --certificate-key 89e813993dd25945d5c00c386b74f30540bd35f66b2a2c2936763c59808d7dbf
+
+Please note that the certificate-key gives access to cluster sensitive data, keep it secret!
+As a safeguard, uploaded-certs will be deleted in two hours; If necessary, you can use
+"kubeadm init phase upload-certs --upload-certs" to reload certs afterward.
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 172.31.90.31:6443 --token vg9otx.fe6jzahg7zlftln7 \
+        --discovery-token-ca-cert-hash sha256:5e3bc27425a741813f4de351b801bc68682c4ec2d6535ebf208863de5e385f8d
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+  
+export KUBECONFIG=/etc/kubernetes/admin.conf
+
+[root@ip-172-31-90-31 ~]# kubectl get nodes
+NAME                           STATUS     ROLES           AGE   VERSION
+ip-172-31-90-31.ec2.internal   NotReady   control-plane   21m   v1.33.3
+
+
+
+---------
+- worker
+---------
+kubeadm join 172.31.90.31:6443 --token vg9otx.fe6jzahg7zlftln7 --discovery-token-ca-cert-hash sha256:5e3bc27425a741813f4de351b801bc68682c4ec2d6535ebf208863de5e385f8d
+
+If the above join command token is expired, Execute below command in master and get new token
+[root@ip-172-31-90-31 ~]# kubeadm token create --print-join-command
+kubeadm join 172.31.90.31:6443 --token bveiqs.i5t2vbbe67lr634r --discovery-token-ca-cert-hash sha256:5e3bc27425a741813f4de351b801bc68682c4ec2d6535ebf208863de5e385f8d
+
+IMPORTANT:
+Inbound rule in ec2 master should be allowed for join command to work properly,
+Allowed all traffic for testing purpose
+
+kubeadm join 172.31.90.31:6443 --token bveiqs.i5t2vbbe67lr634r --discovery-token-ca-cert-hash sha256:5e3bc27425a741813f4de351b801bc68682c4ec2d6535ebf208863de5e385f8d
+[preflight] Running pre-flight checks
+[preflight] Reading configuration from the "kubeadm-config" ConfigMap in namespace "kube-system"...
+[preflight] Use 'kubeadm init phase upload-config --config your-config-file' to re-upload it.
+[kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+[kubelet-start] Starting the kubelet
+[kubelet-check] Waiting for a healthy kubelet at http://127.0.0.1:10248/healthz. This can take up to 4m0s
+[kubelet-check] The kubelet is healthy after 1.002429563s
+[kubelet-start] Waiting for the kubelet to perform the TLS Bootstrap
+
+This node has joined the cluster:
+* Certificate signing request was sent to apiserver and a response was received.
+* The Kubelet was informed of the new secure connection details.
+
+Run 'kubectl get nodes' on the control-plane to see this node join the cluster.
+
+
+
+---------
+- master
+---------
+kubectl get nodes
+NAME                           STATUS     ROLES           AGE   VERSION
+ip-172-31-85-10.ec2.internal   NotReady   <none>          28m   v1.33.3
+ip-172-31-90-31.ec2.internal   NotReady   control-plane   43d   v1.33.3
+
+Flanel (To make worker node status ready)
+# Flannel is a simple, lightweight overlay network solution designed to provide a Layer 3 network fabric for Kubernetes clusters.
+# It functions as a Container Network Interface (CNI) plugin,
+# enabling communication between pods running on different nodes within a Kubernetes cluster.
+
+kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml  ----==>  To make worker node status ready
+namespace/kube-flannel created
+clusterrole.rbac.authorization.k8s.io/flannel created
+clusterrolebinding.rbac.authorization.k8s.io/flannel created
+serviceaccount/flannel created
+configmap/kube-flannel-cfg created
+daemonset.apps/kube-flannel-ds created
+
+kubectl get nodes
+NAME                           STATUS   ROLES           AGE   VERSION
+ip-172-31-85-10.ec2.internal   Ready    <none>          31m   v1.33.3
+ip-172-31-90-31.ec2.internal   Ready    control-plane   43d   v1.33.3

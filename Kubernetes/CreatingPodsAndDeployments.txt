@@ -1,0 +1,220 @@
+---------
+- master
+---------
+kubectl get namespace
+NAME              STATUS   AGE
+default           Active   43d
+kube-flannel      Active   2m19s
+kube-node-lease   Active   43d
+kube-public       Active   43d
+kube-system       Active   43d
+
+kubectl create ns bhanu  ----==>  To create a namespace 'bhanu'
+kubectl delete ns bhanu  ----==>  To delete namespace 'bhanu'
+
+kubectl get pods -n kube-system  ----==>  List pods within namespace 'kube-system'
+
+kubectl run mypod --image=nginx -n bhanu  ----==>  Create a pod with nginx as container image
+
+[root@ip-172-31-90-31 ~]# kubectl run mypod --image=nginx -n bhanu
+Error from server (NotFound): namespaces "bhanu" not found
+
+[root@ip-172-31-90-31 ~]# kubectl create ns bhanu
+namespace/bhanu created
+
+[root@ip-172-31-90-31 ~]# kubectl run mypod --image=nginx -n bhanu
+pod/mypod created
+
+[root@ip-172-31-90-31 ~]# kubectl get pods -n bhanu
+NAME    READY   STATUS    RESTARTS   AGE
+mypod   1/1     Running   0          29s
+
+[root@ip-172-31-90-31 ~]# kubectl get pods -n bhanu -o wide
+NAME    READY   STATUS    RESTARTS   AGE   IP           NODE                           NOMINATED NODE   READINESS GATES
+mypod   1/1     Running   0          56s   10.244.1.2   ip-172-31-85-10.ec2.internal   <none>           <none>
+
+curl 10.244.1.2
+curl: (28) Failed to connect to 10.244.1.2 port 80 after 130156 ms: Could not connect to server
+
+
+
+---------
+- worker
+---------
+curl 10.244.1.2
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+
+
+
+---------
+- master
+---------
+Inbound rule in ec2 worker should be allowed for master to access worked ip,
+Allowed all traffic for testing purpose
+
+ curl 10.244.1.2
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+
+
+kubectl get pods -A  ----==>  List all pods with all namespaces
+
+kubectl describe pod mypod -n bhanu  ----==>  View more information about pod
+
+vi my-namespace.yaml  ----==>  Below information will create a provided Namespace, Notice 'kind' below
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mynamespace
+
+kubectl create -f my-namespace.yaml
+namespace/mynamespace created
+
+vi nginx-pod.yml  ----==>  Below information will create pod with given details, Notice 'kind' below
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    apps: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+    ports:
+    - containerPort: 80
+	
+----==>  here I want to create pod inside namespace "bhanu", else it will create in default namespace
+
+kubectl get pods -n bhanu -o wide
+NAME    READY   STATUS    RESTARTS   AGE   IP           NODE                           NOMINATED NODE   READINESS GATES
+mypod   1/1     Running   0          31m   10.244.1.2   ip-172-31-85-10.ec2.internal   <none>           <none>
+
+kubectl create -f nginx-pod.yml -n bhanu
+pod/nginx created
+
+kubectl get pods -n bhanu -o wide
+NAME    READY   STATUS    RESTARTS   AGE   IP           NODE                           NOMINATED NODE   READINESS GATES
+mypod   1/1     Running   0          40m   10.244.1.2   ip-172-31-85-10.ec2.internal   <none>           <none>
+nginx   1/1     Running   0          21s   10.244.1.3   ip-172-31-85-10.ec2.internal   <none>           <none>
+
+=================================================================================================================
+
+Real time scenario starts now
+kubectl get svc -n bhanu  ----==>  Check if any services are exposed with namespace
+No resources found in bhanu namespace.
+
+kubectl expose pod nginx --type=NodePort -n bhanu  ----==>  Expose the pod 'nginx' present inside namespace 'bhanu' as service
+service/nginx exposed
+
+kubectl get svc -n bhanu
+NAME    TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+nginx   NodePort   10.108.134.48   <none>        80:31402/TCP   28s
+
+check this in browser (ec2 public IP)
+http://44.205.254.245:31402/
+
+
+=================================================================================================================
+
+Deployments:
+Deployment manages a set of pods to run an application workload,
+It is a controller over pod, Very similar to Auto scaling group in AWS.
+
+vi  my-deploy.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+		
+kubectl apply -f my-deploy.yaml  ----==>  creates or updates (better instead of "kubectl create -f nginx-pod.yml")
+deployment.apps/nginx-deployment created
+
+[root@ip-172-31-90-31 ~]# kubectl get deployments
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   3/3     3            3           14s
+
+kubectl get pods --show-labels
+NAME                                READY   STATUS    RESTARTS   AGE   LABELS
+nginx-deployment-647677fc66-fvd6c   1/1     Running   0          66s   app=nginx,pod-template-hash=647677fc66
+nginx-deployment-647677fc66-lhlnb   1/1     Running   0          66s   app=nginx,pod-template-hash=647677fc66
+nginx-deployment-647677fc66-p6h92   1/1     Running   0          66s   app=nginx,pod-template-hash=647677fc66
+
+
+kubectl scale deploy nginx-deployment --replicas=1  ----==>  Scale up or down deployments by specifiying replicas
+
+kubectl get pods --show-labels
+NAME                                READY   STATUS    RESTARTS   AGE     LABELS
+nginx-deployment-647677fc66-fvd6c   1/1     Running   0          2m54s   app=nginx,pod-template-hash=647677fc66
+
+
+kubectl rollout status deployment/nginx-deployment  ----==>  Shows the status of a rollout, providing information about its progress and completion
+deployment "nginx-deployment" successfully rolled out
+
+kubectl rollout undo deployment/nginx-deployment  ----==>  Reverts a resource to a previous revision.
+														   You can use this to rollback to the immediately preceding revision or specify a particular revision using the --to-revision flag
+														   
+
+kubectl get deploy nginx-deployment -o yaml  ----==>  display information about Deployments in the current namespace

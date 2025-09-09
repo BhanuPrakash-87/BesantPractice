@@ -1,6 +1,9 @@
 Container => Runtime instance of Docker image [Light weight virtual machine]
 Docker Image => Set of files which has the application and its dependencies
 
+Containerization => A standard unit of software that can package up your code and all its dependencies,
+So the application runs quickly and reliably from one computing environment to another.
+
 -----------------
 Local Ubuntu app
 -----------------
