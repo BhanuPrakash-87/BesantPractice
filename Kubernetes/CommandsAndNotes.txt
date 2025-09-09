@@ -184,3 +184,5 @@ kubectl get nodes
 NAME                           STATUS   ROLES           AGE   VERSION
 ip-172-31-85-10.ec2.internal   Ready    <none>          31m   v1.33.3
 ip-172-31-90-31.ec2.internal   Ready    control-plane   43d   v1.33.3
+
+-------------------------------------------------------------------------------------------------------------------------------------------------

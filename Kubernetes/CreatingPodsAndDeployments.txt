@@ -216,5 +216,6 @@ deployment "nginx-deployment" successfully rolled out
 kubectl rollout undo deployment/nginx-deployment  ----==>  Reverts a resource to a previous revision.
 														   You can use this to rollback to the immediately preceding revision or specify a particular revision using the --to-revision flag
 														   
-
 kubectl get deploy nginx-deployment -o yaml  ----==>  display information about Deployments in the current namespace
+
+=================================================================================================================
