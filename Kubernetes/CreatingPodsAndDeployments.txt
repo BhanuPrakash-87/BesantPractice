@@ -219,3 +219,28 @@ kubectl rollout undo deployment/nginx-deployment  ----==>  Reverts a resource to
 kubectl get deploy nginx-deployment -o yaml  ----==>  display information about Deployments in the current namespace
 
 =================================================================================================================
+
+My Additional learning
+========================
+1. How to do maintenance activity on the K8 node?
+cordon          Mark node as unschedulable
+drain           Drain node in preparation for maintenance
+uncordon        Mark node as schedulable
+
+2. How do we control the resource usage of POD?
+K8 measure CPU in milicore (1000 milicore = 1 virtual CPU (vCPU))
+In yaml file we can provide below "requests" and "limits"
+resources:
+	requests:
+		cpu: 250m #0.25 vCPU
+	limits:
+		cpu: 500m #0.5 vCPU
+
+kubectl top pods  ----==>  Gives resource usage of pod
+
+3. What is PDB (Pod Disruption Budget)
+When a voluntary disruption is attempted (e.g., draining a node), Kubernetes consults the PDB associated with the affected application.
+PDB is a Policy that limits the number of pods in a replicated application that can be voluntarily disrupted at any given time,
+You define a PDB using either minAvailable or maxUnavailable:
+minAvailable: Specifies the minimum number or percentage of pods that must always be available. 
+maxUnavailable: Specifies the maximum number or percentage of pods that can be unavailable. 
