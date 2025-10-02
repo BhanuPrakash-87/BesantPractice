@@ -1,3 +1,6 @@
+Tuturial path
+https://github.com/kloudvsol/K8s_class/blob/main/devops%20interview%20qs.pdf
+
 ---------------------------------
 Githud Repository already exists
 ---------------------------------
